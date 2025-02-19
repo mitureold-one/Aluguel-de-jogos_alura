@@ -1,27 +1,45 @@
+let jogosAlugados = 0;
+let jogosDevolvidos = 0;
 
-function alterarStatus(id){
+function alterarStatus(id) {
     let game = document.getElementById(`game-${id}`);
     let botam = game.querySelector('a');
     let imagem = game.querySelector('div');
+    let nome = game.querySelector('.dashboard__item__name').textContent;
+    
+    let alugado = botam.classList.contains('dashboard__item__button--return');
 
-    let alugado = botam.classList.contains('dashboard__item__button')
+    let resposta = confirmar(nome, alugado); 
+    if (!resposta) return;
 
-    botam.textContent = alugado ? 'Devolver': 'Alugar'
+    if (alugado) {
+        jogosAlugados--;
+        jogosDevolvidos++;
+    } else {
+        jogosAlugados++;
+        jogosDevolvidos--;
+    }
+
+
+
+    botam.textContent = alugado ? 'Alugar' : 'Devolver';
     botam.classList.toggle('dashboard__item__button');
     botam.classList.toggle('dashboard__item__button--return');
 
     imagem.classList.toggle('dashboard__item__img--rented');
+    quantidade();
 
+}
 
-    
-   //if (botam.classList.contains('dashboard__item__button') ){
-        //botam.textContent='Devolver';
-        //botam.classList.toggle('dashboard__item__button');
-        //botam.classList.add('dashboard__item__button--return');
-   // } else{    
-  //      botam.textContent= 'Alugar';
-  ///      botam.classList.remove('dashboard__item__button--return');
-  //      botam.classList.add('dashboard__item__button');
-  //  }
-    
+function confirmar(nome, alugado) {
+    let mensagem = alugado 
+        ? `Você realmente quer devolver o jogo: "${nome}"?` 
+        : `Você realmente quer alugar o jogo: "${nome}"?`;
+
+    return confirm(mensagem);
+}
+
+function quantidade (){
+    console.log(`A quantidade jogos alugados é: ${jogosAlugados}`)
+    console.log(`A quantidade jogos devolvidos é: ${jogosDevolvidos}`)
 }
